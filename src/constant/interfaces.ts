@@ -43,7 +43,7 @@ export interface GameCardInterface {
 export interface boxCardInterface {
   id: number;
   name: string;
-  value:string
+  value: string;
 }
 
 export interface SpinValuePrors {

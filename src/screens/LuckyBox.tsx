@@ -1,30 +1,24 @@
 //import liraries
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
   Dimensions,
-  Image,
-  Animated,
   FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
-import RNShake from 'react-native-shake';
+import {BoxCard, Header, Modal} from '../components';
 import {ThemeInterface, WinAlertPrors, boxCardInterface} from '../constant';
-import {scale, Navigation} from '../utils';
 import {useThemeHook} from '../hook';
-import {Header, Modal, BoxCard} from '../components';
-import {Images} from '../assets';
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import {Navigation} from '../utils';
 
-const CARD_SIZE = Dimensions.get('screen').width / 1.4;
 // create a component
 const LuckyBox = () => {
   const [selectedValue, SetSelectedValue] = useState<any>({});
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
-  const [styles, theme] = useThemeHook(Styles);
+  const [styles] = useThemeHook(Styles);
   const BoxData = [
     {id: 1, value: '66', name: 'box1'},
     {id: 2, value: '45', name: 'box2'},
@@ -41,20 +35,19 @@ const LuckyBox = () => {
   };
 
   const onCardPress = (item: boxCardInterface) => {
-    console.log("===>",item)
-    WinAlert(item)
-    
+    console.log('===>', item);
+    WinAlert(item);
   };
   const WinAlert = (item: boxCardInterface) => {
     SetWinAlert({
       Title: `🎉 Congratulations 🎉`,
       Message: ` Congratulations you win $${item.value} USD Please Clame Your 🎁 gift!`,
     });
-     SetIsWinModal(true);
+    SetIsWinModal(true);
   };
   const onWinModelClosePress = () => {
     SetIsWinModal(false);
-  }
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -67,19 +60,21 @@ const LuckyBox = () => {
         <View style={styles.bodyContainer}>
           <FlatList
             scrollEnabled={false}
-            contentContainerStyle={styles.flatListContainer}
+            // contentContainerStyle={styles.flatListContainer}
             data={BoxData}
             numColumns={3}
             horizontal={false}
-            renderItem={({item}) => <BoxCard onPress={() => onCardPress(item)} />}
+            renderItem={({item}) => (
+              <BoxCard onPress={() => onCardPress(item)} />
+            )}
             keyExtractor={item => item.id.toString()}
           />
         </View>
-        <View style={styles.footerContainer}>
+        {/* <View style={styles.footerContainer}>
           <Text style={styles.subTitleText}>
             click one of the box to win the Price!
           </Text>
-        </View>
+        </View> */}
       </View>
       <Modal
         visible={isWinModal}
@@ -101,36 +96,33 @@ const Styles = (theme: ThemeInterface) => {
     },
     container: {
       flex: 1,
-      backgroundColor: theme.color.backgroud,
-      paddingBottom: scale(30),
+      flexDirection: 'row',
     },
     headerContainer: {
+      flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      paddingTop: scale(20),
     },
     TitleText: {
-      fontSize: scale(24),
+      fontSize: 24,
       fontWeight: '600',
       color: theme.color.textPrimary,
     },
     subTitleText: {
-      marginTop: scale(10),
-      fontSize: scale(16),
+      marginTop: 10,
+      fontSize: 16,
       fontWeight: '500',
       color: theme.color.textSecondary,
     },
     bodyContainer: {
       flex: 1,
-      padding: scale(10),
+      padding: 20,
     },
     flatListContainer: {
       flex: 1,
-      backgroundColor: theme.color.backgroud,
-      paddingBottom: scale(30),
+      backgroundColor: 'red',
     },
     footerContainer: {
-      paddingVertical: scale(20),
       justifyContent: 'center',
       alignItems: 'center',
     },

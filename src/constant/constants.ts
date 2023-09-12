@@ -2,11 +2,14 @@ export const ScreenName = {
   Splash: 'Splash',
   Home: 'Home',
   Games: 'Games',
-  SpinTheWheel:'SpinTheWheel',
-  ScratchNWin:'ScratchNWin',
-  ShakeNWin:'ShakeNWin',
-  LuckyBox:'LuckyBox',
-  LuckyCard:'LuckyCard'
+  SpinTheWheel: 'SpinTheWheel',
+  ScratchNWin: 'ScratchNWin',
+  ShakeNWin: 'ShakeNWin',
+  LuckyBox: 'LuckyBox',
+  LuckyCard: 'LuckyCard',
+  LuckyDice: 'LuckyDice',
+  LuckyLots: 'LukyLots',
+  LuckyBall: 'LuckyBall',
 };
 
 export const LocalStore = {

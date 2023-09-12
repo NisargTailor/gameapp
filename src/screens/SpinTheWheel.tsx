@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import {Navigation, scale} from '../utils';
+import {Navigation} from '../utils';
 import {Header, Modal, WheelofSpin} from '../components';
 import {SpinValuePrors, ThemeInterface, WinAlertPrors} from '../constant';
 import {useThemeHook} from '../hook';
@@ -16,9 +16,10 @@ const SpinTheWheel = () => {
   var spinRefer = useRef<any>(null);
   const [selectedValue, SetSelectedValue] = useState<SpinValuePrors>({});
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
+  const [isButton, SetInButton] = useState<boolean>(true);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
-  const [styles, theme] = useThemeHook(Styles);
-  const participants = ['10', '20', '30', '40', '50', '60', '70', '90', 'Free'];
+  const [styles] = useThemeHook(Styles);
+  const participants = ['10', '20', '30', '40'];
   const wheelOptions = {
     rewards: participants,
     knobSize: 30,
@@ -40,43 +41,51 @@ const SpinTheWheel = () => {
         Message: ` Congratulations you win ${selectedValue.value} Please Clame Your 🎁 gift!`,
       });
       SetIsWinModal(true);
+      SetInButton(true);
     }
   }, [selectedValue]);
 
   const onSpinPress = () => {
     spinRefer?.current._tryAgain();
+    SetInButton(false);
   };
   const onBackPress = () => {
     Navigation.goBack();
   };
   const onWinModelClosePress = () => {
     SetIsWinModal(false);
-  }
+  };
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Header title="Spin the wheel" onBackPress={onBackPress} />
-      <View style={styles.container}>
-        <WheelofSpin
-          options={wheelOptions}
-          getWinner={(value: any, index: any) => {
-            SetSelectedValue({value: value, index: index});
-          }}
-        />
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.spinButton} onPress={onSpinPress}>
-            <Text style={styles.spinButtonText}>Spin The Wheel !</Text>
-          </TouchableOpacity>
+    <>
+      <SafeAreaView style={styles.safeAreaView}>
+        <Header title="Spin the wheel" onBackPress={onBackPress} />
+        <View style={styles.container}>
+          <View style={styles.WheelContainer}>
+            <WheelofSpin
+              options={wheelOptions}
+              getWinner={(value: any, index: any) => {
+                SetSelectedValue({value: value, index: index});
+              }}
+            />
+          </View>
+          <Modal
+            visible={isWinModal}
+            type="spin-win"
+            title={winAlert.Title}
+            message={winAlert.Message}
+            onClosePress={onWinModelClosePress}
+          />
+          {isButton && (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.spinButton} onPress={onSpinPress}>
+                <Text style={styles.spinButtonText}>Tap and spin!</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
-      </View>
-      <Modal
-        visible={isWinModal}
-        type="spin-win"
-        title={winAlert.Title}
-        message={winAlert.Message}
-        onClosePress={onWinModelClosePress}
-      />
-    </SafeAreaView>
+      </SafeAreaView>
+    </>
   );
 };
 
@@ -87,18 +96,28 @@ const Styles = (theme: ThemeInterface) => {
       flex: 1,
       backgroundColor: theme.color.backgroud,
     },
+    HeaderContainer: {
+      zIndex: 1000,
+    },
     container: {
       flex: 1,
-      backgroundColor: theme.color.backgroud,
-      paddingBottom: scale(30),
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    WheelContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'red',
     },
     buttonContainer: {
+      position: 'absolute',
       justifyContent: 'center',
       alignItems: 'center',
     },
     spinButtonText: {
-      fontSize: 18,
-      fontWeight: '800',
+      fontSize: 16,
+      fontWeight: '500',
       color: theme.color.white,
     },
     spinButton: {
@@ -106,7 +125,7 @@ const Styles = (theme: ThemeInterface) => {
       padding: 18,
       borderRadius: 20,
       backgroundColor: theme.color.primary,
-      borderWidth: scale(2),
+      borderWidth: 1,
       borderColor: theme.color.tertiary,
     },
   });

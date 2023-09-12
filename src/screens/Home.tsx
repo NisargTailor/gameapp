@@ -15,7 +15,7 @@ import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
 // create a component
 const Home = () => {
-  const [styles, theme] = useThemeHook(Styles);
+  const [styles] = useThemeHook(Styles);
 
   const onCardPress = (item: GameCardInterface) => {
     switch (item.name) {
@@ -31,10 +31,18 @@ const Home = () => {
       case 'Lucky Box':
         Navigation.navigate(ScreenName.LuckyBox);
         break;
-        case 'Lucky Cards':
-          Navigation.navigate(ScreenName.LuckyCard);
-          break;
-
+      case 'Lucky Cards':
+        Navigation.navigate(ScreenName.LuckyCard);
+        break;
+      case 'Lucky Dice':
+        Navigation.navigate(ScreenName.LuckyDice);
+        break;
+      case 'Lucky Lots':
+        Navigation.navigate(ScreenName.LuckyLots);
+        break;
+      case 'Lucky Ball':
+        Navigation.navigate(ScreenName.LuckyBall);
+        break;
       default:
         break;
     }
@@ -48,7 +56,7 @@ const Home = () => {
       <View style={styles.flatlistContainer}>
         <FlatList
           data={games}
-          numColumns={2}
+          numColumns={4}
           horizontal={false}
           renderItem={({item}) => (
             <Card item={item} onPress={() => onCardPress(item)} />
@@ -66,7 +74,7 @@ const Styles = (theme: ThemeInterface) => {
   return StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#1c1c1c',
+      backgroundColor: theme.color.backgroud,
       paddingHorizontal: 20,
     },
     flatlistContainer: {

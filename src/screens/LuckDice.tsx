@@ -1,37 +1,24 @@
 //import liraries
 import React, {useState} from 'react';
-import {
-  Dimensions,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {Images} from '../assets';
+import {Dimensions, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {Header, Modal} from '../components';
+import DiceAnimation from '../components/DiceRoll';
 import {ThemeInterface, WinAlertPrors, boxCardInterface} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
 
 // create a component
-const LuckyCard = () => {
-  const [selectedValue, SetSelectedValue] = useState<any>({});
+const LuckyDice = () => {
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
   const [styles] = useThemeHook(Styles);
-  const cardData = [
-    {id: 1, value: '66', name: 'card1'},
-    {id: 2, value: '45', name: 'card2'},
-    {id: 3, value: '76', name: 'card3'},
-  ];
   const onBackPress = () => {
     Navigation.goBack();
   };
 
-  const onCardPress = (item: boxCardInterface) => {
-    SetSelectedValue(item);
+  const onDiceChage = (number: number) => {
+    console.log('number', number);
+    let item = {id: number, value: `${number}`, name: `${number}`};
     WinAlert(item);
   };
   const WinAlert = (item: boxCardInterface) => {
@@ -51,16 +38,10 @@ const LuckyCard = () => {
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.TitleText}>Congatulation !</Text>
-          {/* <Text style={styles.subTitleText}>Select your lucky card!</Text> */}
+          <Text style={styles.subTitleText}>Select your lucky card!</Text>
         </View>
         <View style={styles.bodyContainer}>
-          {cardData.map(item => {
-            return (
-              <TouchableOpacity key={item.id} onPress={() => onCardPress(item)}>
-                <Image source={Images.card} style={styles.image} />
-              </TouchableOpacity>
-            );
-          })}
+          <DiceAnimation onDiceChange={onDiceChage} />
         </View>
         <View style={styles.footerContainer}>
           <Text style={styles.subTitleText}>
@@ -88,33 +69,39 @@ const Styles = (theme: ThemeInterface) => {
     },
     container: {
       flex: 1,
+      backgroundColor: theme.color.backgroud,
+      paddingBottom: 30,
     },
     headerContainer: {
       justifyContent: 'center',
       alignItems: 'center',
+      paddingTop: 20,
     },
     TitleText: {
       fontSize: 24,
+      fontWeight: '600',
       color: theme.color.textPrimary,
     },
     subTitleText: {
-      fontSize: 12,
-      color: theme.color.textPrimary,
+      marginTop: 10,
+      fontSize: 16,
+      fontWeight: '500',
+      color: theme.color.textSecondary,
     },
     bodyContainer: {
       flex: 1,
+      padding: 5,
       flexDirection: 'row',
-      justifyContent: 'center',
       alignItems: 'center',
+      justifyContent: 'center',
     },
     image: {
-      width: Dimensions.get('window').width / 7,
-      height: Dimensions.get('window').width / 4,
-      resizeMode: 'stretch',
-      margin: 5,
+      width: Dimensions.get('screen').width / 3 - 10,
+      height: Dimensions.get('screen').width,
+      resizeMode: 'contain',
     },
     footerContainer: {
-      paddingVertical: 10,
+      paddingVertical: 20,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -122,4 +109,4 @@ const Styles = (theme: ThemeInterface) => {
 };
 
 //make this component available to the app
-export default LuckyCard;
+export default LuckyDice;

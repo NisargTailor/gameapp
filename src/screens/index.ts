@@ -1,7 +1,10 @@
-export {default as Home } from './Home'
-export {default as Games} from './Games'
-export {default as SpinTheWheel} from './SpinTheWheel'
-export {default as ScratchNWin} from './ScratchNWin'
-export {default as ShakeNWin} from './ShakeNWin'
-export {default as LuckyBox} from './LuckyBox'
-export {default as LuckyCard} from './LuckyCard'
+export {default as Home} from './Home';
+export {default as Games} from './Games';
+export {default as SpinTheWheel} from './SpinTheWheel';
+export {default as ScratchNWin} from './ScratchNWin';
+export {default as ShakeNWin} from './ShakeNWin';
+export {default as LuckyBox} from './LuckyBox';
+export {default as LuckyCard} from './LuckyCard';
+export {default as LuckyDice} from './LuckDice';
+export {default as LuckyLots} from './LuckyLots';
+export {default as LuckyBall} from './LuckyBall';

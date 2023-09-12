@@ -1,29 +1,24 @@
 //import liraries
-import React, {Component} from 'react';
+import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
+  Dimensions,
   Image,
   Platform,
-  Dimensions,
+  StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {Images} from '../assets';
-import { boxCardInterface } from '../constant';
-
+import {boxCardInterface} from '../constant';
 
 export interface BoxProps {
-    item?:boxCardInterface
-    onPress?:() => void
-    } 
-    
-
+  item?: boxCardInterface;
+  onPress?: () => void;
+}
 
 // create a component
-const BoxCard:React.FC<BoxProps> = (props) => {
-
-    const {onPress} = props
+const BoxCard: React.FC<BoxProps> = props => {
+  const {onPress} = props;
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -40,6 +35,7 @@ const BoxCard:React.FC<BoxProps> = (props) => {
 const styles = StyleSheet.create({
   container: {
     width: '33.33%',
+    height: '100%',
     padding: 10,
   },
   cardBody: {
@@ -49,11 +45,11 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 30,
+    paddingVertical: 20,
   },
   imageContainer: {
-    height: Dimensions.get('screen').width / 6 - 10,
-    width:  Dimensions.get('screen').width / 6 - 10,
+    height: 34,
+    width: 34,
     resizeMode: 'contain',
   },
   titleText: {

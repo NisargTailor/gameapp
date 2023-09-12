@@ -1,17 +1,5 @@
 import * as React from 'react';
-import Svg, {
-  ClipPath,
-  Defs,
-  Ellipse,
-  G,
-  LinearGradient,
-  Path,
-  Stop,
-  TSpan,
-  Text,
-} from 'react-native-svg';
-import {scale} from '../../utils/scale';
-import {Color} from '../../theme';
+import Svg, {G, Path} from 'react-native-svg';
 
 export type IconProps = {
   size?: number;
@@ -27,8 +15,8 @@ export const HOME_ICON = ({
   primaryColor,
 }: IconProps) => (
   <Svg
-    width={scale(width)}
-    height={scale(height)}
+    width={width}
+    height={height}
     color={primaryColor}
     data-name="Group 135813"
     viewBox="0 0 28.646 25.631">
@@ -46,8 +34,8 @@ export const HELP_ICON = ({
   primaryColor,
 }: IconProps) => (
   <Svg
-    width={scale(width)}
-    height={scale(height)}
+    width={width}
+    height={height}
     color={primaryColor}
     viewBox="0 0 25.239 24">
     <G data-name="Group 853">
@@ -70,8 +58,8 @@ export const PROFILE_ICON = ({
   secondaryColor,
 }: IconProps) => (
   <Svg
-    width={scale(width)}
-    height={scale(height)}
+    width={width}
+    height={height}
     fill={primaryColor}
     viewBox="0 0 23.001 26.125">
     <G data-name="Group 201852">
@@ -97,8 +85,8 @@ export const CLOSE_ICON = ({
   primaryColor,
 }: IconProps) => (
   <Svg
-    width={scale(width)}
-    height={scale(height)}
+    width={width}
+    height={height}
     color={primaryColor}
     viewBox="0 0 15.931 15.931">
     <G
@@ -118,11 +106,7 @@ export const BACK_ICON = ({
   height = 24,
   primaryColor,
 }: IconProps) => (
-  <Svg
-    width={scale(width)}
-    height={scale(height)}
-    color={primaryColor}
-    viewBox="0 0 24 24">
+  <Svg width={width} height={height} color={primaryColor} viewBox="0 0 24 24">
     <Path fill="none" d="M0 0h24v24H0Z" data-name="Path 767" />
     <Path
       fill={primaryColor || '#fff'}
@@ -139,9 +123,9 @@ export const DOWN_ARROW_ICON = ({
   primaryColor,
 }: IconProps) => (
   <Svg
-    width={scale(width)}
+    width={width}
     fill={primaryColor || '#E35255'}
-    height={scale(height)}
+    height={height}
     viewBox="0 0 330 330">
     <Path d="M325.607 79.393c-5.857-5.857-15.355-5.858-21.213.001l-139.39 139.393L25.607 79.393c-5.857-5.857-15.355-5.858-21.213.001-5.858 5.858-5.858 15.355 0 21.213l150.004 150a14.999 14.999 0 0 0 21.212-.001l149.996-150c5.859-5.857 5.859-15.355.001-21.213z" />
   </Svg>
@@ -153,9 +137,9 @@ export const UP_ARROW_ICON = ({
   primaryColor,
 }: IconProps) => (
   <Svg
-    width={scale(width)}
+    width={width}
     fill={primaryColor || '#E35255'}
-    height={scale(height)}
+    height={height}
     viewBox="0 0 330 330">
     <Path d="m325.606 229.393-150.004-150a14.997 14.997 0 0 0-21.213.001l-149.996 150c-5.858 5.858-5.858 15.355 0 21.213 5.857 5.857 15.355 5.858 21.213 0l139.39-139.393 139.397 139.393A14.953 14.953 0 0 0 315 255a14.95 14.95 0 0 0 10.607-4.394c5.857-5.858 5.857-15.355-.001-21.213z" />
   </Svg>
@@ -166,7 +150,7 @@ export const ERROR_ICON = ({
   height = 24,
   primaryColor,
 }: IconProps) => (
-  <Svg width={scale(width)} height={scale(height)} viewBox="0 0 20.582 20.582">
+  <Svg width={width} height={height} viewBox="0 0 20.582 20.582">
     <Path
       fill={primaryColor || '#ffb819'}
       d="M9.262 13.378h2.058v2.058H9.262Zm0-8.233h2.058v6.175H9.262ZM10.281 0a10.291 10.291 0 1 0 10.3 10.291A10.286 10.286 0 0 0 10.281 0Zm.01 18.524a8.233 8.233 0 1 1 8.233-8.233 8.231 8.231 0 0 1-8.233 8.233Z"

@@ -1,29 +1,30 @@
 //import liraries
 import React, {useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
+  Animated,
   Dimensions,
   Image,
-  Animated,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
-import RNShake from 'react-native-shake';
-import {ThemeInterface, WinAlertPrors} from '../constant';
-import {scale, Navigation} from '../utils';
-import {useThemeHook} from '../hook';
-import {Header, Modal} from '../components';
-import {Images} from '../assets';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import RNShake from 'react-native-shake';
+import {Images} from '../assets';
+import {Header, Modal} from '../components';
+import {ThemeInterface, WinAlertPrors} from '../constant';
+import {useThemeHook} from '../hook';
+import {Navigation} from '../utils';
+import FastImage from 'react-native-fast-image';
 
-const CARD_SIZE = Dimensions.get('screen').width / 1.4;
+const CARD_SIZE = Dimensions.get('screen').height / 1.4;
 // create a component
 const ShakeNWin = () => {
   const [styles, theme] = useThemeHook(Styles);
   const shakeAnimation = new Animated.Value(0);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
-  const [shakeCount,SetShakeCount] = useState<number>(0)
+  const [shakeCount, SetShakeCount] = useState<number>(0);
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const options = {
     enableVibrateFallback: true,
@@ -37,7 +38,7 @@ const ShakeNWin = () => {
       console.log('shake');
       ReactNativeHapticFeedback.trigger('impactHeavy', options);
       shakeAnimation.stopAnimation();
-      WinAlert()
+      WinAlert();
     });
     return () => {
       // Your code here...
@@ -79,40 +80,37 @@ const ShakeNWin = () => {
       Title: `🎉 Congratulations 🎉`,
       Message: ` Congratulations you win $100USD Please Clame Your 🎁 gift!`,
     });
-     SetIsWinModal(true);
+    SetIsWinModal(true);
   };
   const onWinModelClosePress = () => {
     SetIsWinModal(false);
-  }
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Header title="Shake & Win" onBackPress={onBackPress} />
-      <View style={styles.headerContainer}>
-        <Text style={styles.TitleText}>Congatulation !</Text>
-        <Text style={styles.subTitleText}>Shake you phone get the reword!</Text>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.TitleText}>Congatulation !</Text>
+          <Text style={styles.subTitleText}>
+            Shake you phone get the reword!
+          </Text>
+        </View>
+        <Animated.View
+          style={[
+            styles.cardContainer,
+            {transform: [{translateX: shakeAnimation}]},
+          ]}>
+          <FastImage source={Images.shake} style={styles.shakeImage} />
+        </Animated.View>
+        <Modal
+          visible={isWinModal}
+          type="spin-win"
+          title={winAlert.Title}
+          message={winAlert.Message}
+          onClosePress={onWinModelClosePress}
+        />
       </View>
-
-      <Animated.View
-        style={[
-          styles.cardContainer,
-          {transform: [{translateX: shakeAnimation}]},
-        ]}>
-        <Image source={Images.shake} style={styles.background_view} />
-      </Animated.View>
-
-      <View style={styles.footerContainer}>
-        <Text style={styles.subTitleText}>
-        Shake you phone get the reword!
-        </Text>
-      </View>
-      <Modal
-        visible={isWinModal}
-        type="spin-win"
-        title={winAlert.Title}
-        message={winAlert.Message}
-        onClosePress={onWinModelClosePress}
-      />
     </SafeAreaView>
   );
 };
@@ -126,48 +124,42 @@ const Styles = (theme: ThemeInterface) => {
     },
     container: {
       flex: 1,
+      flexDirection: 'row',
       backgroundColor: theme.color.backgroud,
-      paddingBottom: scale(30),
+      paddingBottom: 10,
     },
     headerContainer: {
+      flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      paddingTop: scale(20),
+      padding: 20,
     },
     TitleText: {
-      fontSize: scale(24),
+      fontSize: 24,
       fontWeight: '600',
       color: theme.color.textPrimary,
     },
     subTitleText: {
-      marginTop: scale(10),
-      fontSize: scale(16),
+      marginTop: 20,
+      fontSize: 24,
       fontWeight: '500',
       color: theme.color.textSecondary,
+      textAlign: 'center',
     },
     cardContainer: {
-      marginTop: scale(20),
-      width: CARD_SIZE,
-      height: CARD_SIZE,
+      flex: 1,
+      marginTop: 20,
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
     },
-    background_view: {
-      zIndex: -120,
-      position: 'absolute',
-      width: CARD_SIZE,
-      height: CARD_SIZE,
-      backgroundColor: 'transparent',
-      borderRadius: 16,
-    },
-    scratch_card: {
-      width: CARD_SIZE,
-      height: CARD_SIZE,
-      backgroundColor: 'transparent',
+    shakeImage: {
+      height: '80%',
+      width: '80%',
+      resizeMode: 'contain',
     },
     footerContainer: {
-      paddingVertical: scale(20),
+      paddingVertical: 20,
       justifyContent: 'center',
       alignItems: 'center',
     },

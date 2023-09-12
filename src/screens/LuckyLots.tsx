@@ -1,60 +1,94 @@
 import React, {useState} from 'react';
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {ScratchCard} from 'rn-scratch-card';
+import {
+  Animated,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Images} from '../assets';
 import {Header, Modal} from '../components';
 import {ThemeInterface, WinAlertPrors} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
-const ScratchNWin = () => {
+
+const LuckyLots = () => {
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
-  const [isScratched, SetIsScreatch] = useState<boolean>(false);
+  const shakeAnimation = new Animated.Value(0);
+
   const [styles] = useThemeHook(Styles);
 
   const onBackPress = () => {
     Navigation.goBack();
   };
 
-  const handleScratch = (scratchPercentage: number) => {
-    if (scratchPercentage >= 55) {
-      SetIsScreatch(true);
+  const startShake = () => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(shakeAnimation, {
+          toValue: 10,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(shakeAnimation, {
+          toValue: -10,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(shakeAnimation, {
+          toValue: 10,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(shakeAnimation, {
+          toValue: 0,
+          duration: 100,
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+  };
+
+  const handleClick = () => {
+    startShake();
+    setTimeout(() => {
+      shakeAnimation.stopAnimation();
       SetWinAlert({
         Title: `🎉 Congratulations 🎉`,
         Message: ` Congratulations you win $100USD Please Clame Your 🎁 gift!`,
       });
-      //   SetIsWinModal(true);
-    }
+      SetIsWinModal(true);
+    }, 2000);
   };
+
   const onWinModelClosePress = () => {
     SetIsWinModal(false);
   };
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Header title="Scratch & Win" onBackPress={onBackPress} />
+      <Header title="Luky Lots" onBackPress={onBackPress} />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.TitleText}>Congatulation !</Text>
           {/* <Text style={styles.subTitleText}>Here is your scratch card</Text> */}
         </View>
         <View style={styles.cardContainer}>
-          {!isScratched && (
-            <ScratchCard
-              source={Images.card_forground}
-              brushWidth={50}
-              onScratch={handleScratch}
-              style={styles.scratch_card}
-            />
-          )}
-          <Image
-            source={Images.card_background}
-            style={styles.background_view}
-          />
+          <TouchableOpacity onPress={handleClick}>
+            <Animated.View
+              style={[
+                styles.cardContainer,
+                {transform: [{translateX: shakeAnimation}]},
+              ]}>
+              <Image source={Images.bowl} style={styles.scratch_card} />
+            </Animated.View>
+          </TouchableOpacity>
         </View>
         <View style={styles.footerContainer}>
-          <Text style={styles.subTitleText}>
-            Scratch the above card by swiming on it
-          </Text>
+          <Text style={styles.subTitleText}>Tap the above bowl.</Text>
         </View>
       </View>
       <Modal
@@ -119,4 +153,4 @@ const Styles = (theme: ThemeInterface) => {
   });
 };
 
-export default ScratchNWin;
+export default LuckyLots;

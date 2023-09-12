@@ -1,7 +1,5 @@
-//import liraries
 import React, {useState} from 'react';
 import {
-  Dimensions,
   Image,
   SafeAreaView,
   StyleSheet,
@@ -11,60 +9,56 @@ import {
 } from 'react-native';
 import {Images} from '../assets';
 import {Header, Modal} from '../components';
-import {ThemeInterface, WinAlertPrors, boxCardInterface} from '../constant';
+import {ThemeInterface, WinAlertPrors} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
 
-// create a component
-const LuckyCard = () => {
-  const [selectedValue, SetSelectedValue] = useState<any>({});
+const LuckyBall = () => {
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
+  const [isPlay, SetIsPlay] = useState<boolean>(false);
+
   const [styles] = useThemeHook(Styles);
-  const cardData = [
-    {id: 1, value: '66', name: 'card1'},
-    {id: 2, value: '45', name: 'card2'},
-    {id: 3, value: '76', name: 'card3'},
-  ];
+
   const onBackPress = () => {
     Navigation.goBack();
   };
 
-  const onCardPress = (item: boxCardInterface) => {
-    SetSelectedValue(item);
-    WinAlert(item);
+  const handleClick = () => {
+    SetIsPlay(true);
+    setTimeout(() => {
+      SetWinAlert({
+        Title: `🎉 Congratulations 🎉`,
+        Message: ` Congratulations you win $100USD Please Clame Your 🎁 gift!`,
+      });
+      SetIsPlay(false);
+      SetIsWinModal(true);
+    }, 2000);
   };
-  const WinAlert = (item: boxCardInterface) => {
-    SetWinAlert({
-      Title: `🎉 Congratulations 🎉`,
-      Message: ` Congratulations you win $${item.value} USD Please Clame Your 🎁 gift!`,
-    });
-    SetIsWinModal(true);
-  };
+
   const onWinModelClosePress = () => {
     SetIsWinModal(false);
   };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Header title="Lucky Box" onBackPress={onBackPress} />
+      <Header title="Luky Lots" onBackPress={onBackPress} />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.TitleText}>Congatulation !</Text>
-          {/* <Text style={styles.subTitleText}>Select your lucky card!</Text> */}
+          {/* <Text style={styles.subTitleText}>Here is your scratch card</Text> */}
         </View>
-        <View style={styles.bodyContainer}>
-          {cardData.map(item => {
-            return (
-              <TouchableOpacity key={item.id} onPress={() => onCardPress(item)}>
-                <Image source={Images.card} style={styles.image} />
-              </TouchableOpacity>
-            );
-          })}
+        <View style={styles.cardContainer}>
+          <TouchableOpacity onPress={handleClick}>
+            <Image
+              source={isPlay ? Images.ballgif : Images.ball}
+              style={styles.Image}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.footerContainer}>
           <Text style={styles.subTitleText}>
-            click one of the card to win the price!
+            Tap the above machine to play.
           </Text>
         </View>
       </View>
@@ -79,7 +73,6 @@ const LuckyCard = () => {
   );
 };
 
-// define your styles
 const Styles = (theme: ThemeInterface) => {
   return StyleSheet.create({
     safeAreaView: {
@@ -88,10 +81,12 @@ const Styles = (theme: ThemeInterface) => {
     },
     container: {
       flex: 1,
+      // flexDirection: 'row',
     },
     headerContainer: {
       justifyContent: 'center',
       alignItems: 'center',
+      paddingVertical: 10,
     },
     TitleText: {
       fontSize: 24,
@@ -101,25 +96,32 @@ const Styles = (theme: ThemeInterface) => {
       fontSize: 12,
       color: theme.color.textPrimary,
     },
-    bodyContainer: {
+    cardContainer: {
       flex: 1,
-      flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
     },
-    image: {
-      width: Dimensions.get('window').width / 7,
-      height: Dimensions.get('window').width / 4,
+    background_view: {
+      position: 'absolute',
+      zIndex: -1000,
+      flex: 1,
+      height: 200,
+      width: 200,
       resizeMode: 'stretch',
-      margin: 5,
+      backgroundColor: 'transparent',
+    },
+    Image: {
+      height: 200,
+      width: 200,
+      resizeMode: 'stretch',
+      backgroundColor: 'transparent',
     },
     footerContainer: {
-      paddingVertical: 10,
+      padding: 5,
       justifyContent: 'center',
       alignItems: 'center',
     },
   });
 };
 
-//make this component available to the app
-export default LuckyCard;
+export default LuckyBall;
