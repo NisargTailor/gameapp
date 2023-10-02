@@ -18,11 +18,56 @@ const LuckyLots = () => {
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
   const shakeAnimation = new Animated.Value(0);
+  const celebrateAnimation = new Animated.Value(0);
+  const scaleHideAnimation = new Animated.Value(1);
 
   const [styles] = useThemeHook(Styles);
 
   const onBackPress = () => {
     Navigation.goBack();
+  };
+  const scaleAnimation = {
+    transform: [
+      {
+        scale: celebrateAnimation.interpolate({
+          inputRange: [1, 4],
+          outputRange: [0, 0.1],
+        }),
+      },
+    ],
+    zIndex: 99999,
+    height: 200,
+    width: 200,
+  };
+
+  const bowlScaleAnimation = () => {
+    Animated.sequence([
+      Animated.timing(scaleHideAnimation, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(scaleHideAnimation, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  const startCelebrate = () => {
+    Animated.sequence([
+      Animated.timing(celebrateAnimation, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(celebrateAnimation, {
+        toValue: -50,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
 
   const startShake = () => {
@@ -54,6 +99,8 @@ const LuckyLots = () => {
 
   const handleClick = () => {
     startShake();
+    startCelebrate();
+    bowlScaleAnimation();
     setTimeout(() => {
       shakeAnimation.stopAnimation();
       SetWinAlert({
@@ -78,13 +125,65 @@ const LuckyLots = () => {
         </View>
         <View style={styles.cardContainer}>
           <TouchableOpacity onPress={handleClick}>
-            <Animated.View
-              style={[
-                styles.cardContainer,
-                {transform: [{translateX: shakeAnimation}]},
-              ]}>
-              <Image source={Images.bowl} style={styles.scratch_card} />
-            </Animated.View>
+            {!isWinModal && (
+              <>
+                <Animated.View
+                  style={[
+                    styles.paperLeftContainer,
+                    {
+                      transform: [
+                        {translateY: celebrateAnimation},
+                        {scale: scaleHideAnimation},
+                      ],
+                    },
+                  ]}>
+                  <Image source={Images.paper} style={styles.paperStyle} />
+                </Animated.View>
+
+                <Animated.View
+                  style={[
+                    styles.paperCenterContainer,
+                    {
+                      transform: [{translateY: celebrateAnimation}],
+                    },
+                    scaleAnimation,
+                  ]}>
+                  <Image
+                    source={Images.paper}
+                    style={styles.paperCenterStyle}
+                  />
+                </Animated.View>
+                <Animated.View
+                  style={[
+                    styles.paperRightContainer,
+                    {
+                      transform: [
+                        {translateY: celebrateAnimation},
+                        {scale: scaleHideAnimation},
+                      ],
+                    },
+                  ]}>
+                  <Image source={Images.paper} style={styles.paperStyle} />
+                </Animated.View>
+                <Animated.View
+                  style={[
+                    styles.cardContainer,
+                    {
+                      transform: [
+                        {translateX: shakeAnimation},
+                        {scale: scaleHideAnimation},
+                      ],
+                    },
+                  ]}>
+                  <Image source={Images.bowl} style={styles.scratch_card} />
+                </Animated.View>
+              </>
+            )}
+            {isWinModal && (
+              <Animated.View style={styles.paperContainer}>
+                <Image source={Images.paper} style={styles.paperDefault} />
+              </Animated.View>
+            )}
           </TouchableOpacity>
         </View>
         <View style={styles.footerContainer}>
@@ -130,6 +229,33 @@ const Styles = (theme: ThemeInterface) => {
       justifyContent: 'center',
       alignItems: 'center',
     },
+    paperContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    paperDefault: {
+      height: 200,
+      width: 200,
+    },
+    paperLeftContainer: {
+      position: 'absolute',
+      top: 70,
+    },
+    paperCenterContainer: {
+      position: 'absolute',
+      top: -10,
+      left: 10,
+      right: 50,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    paperRightContainer: {
+      position: 'absolute',
+      top: 80,
+      right: 10,
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
+    },
     background_view: {
       position: 'absolute',
       zIndex: -1000,
@@ -138,6 +264,14 @@ const Styles = (theme: ThemeInterface) => {
       width: 200,
       resizeMode: 'stretch',
       backgroundColor: 'transparent',
+    },
+    paperStyle: {
+      height: 75,
+      width: 75,
+    },
+    paperCenterStyle: {
+      height: 100,
+      width: 100,
     },
     scratch_card: {
       height: 200,

@@ -34,7 +34,7 @@ const LuckyDice = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Header title="Lucky Box" onBackPress={onBackPress} />
+      <Header title="Lucky Dice" onBackPress={onBackPress} />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.TitleText}>Congatulation !</Text>

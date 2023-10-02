@@ -14,6 +14,8 @@ const Images = {
   bowl: require('./images/bowl.png'),
   ballgif: require('./images/ballgif.gif'),
   ball: require('./images/ball.png'),
+  paper: require('./images/paper.png'),
+  white_card: require('./images/white_card.png'),
 };
 
 export default Images;

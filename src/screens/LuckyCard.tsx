@@ -1,6 +1,7 @@
 //import liraries
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
+  Animated,
   Dimensions,
   Image,
   SafeAreaView,
@@ -20,6 +21,7 @@ const LuckyCard = () => {
   const [selectedValue, SetSelectedValue] = useState<any>({});
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
+  const flipAnimation = useRef(new Animated.Value(0)).current;
   const [styles] = useThemeHook(Styles);
   const cardData = [
     {id: 1, value: '66', name: 'card1'},
@@ -29,10 +31,29 @@ const LuckyCard = () => {
   const onBackPress = () => {
     Navigation.goBack();
   };
+  const flipToFrontStyle = {
+    transform: [
+      {
+        rotateY: flipAnimation.interpolate({
+          inputRange: [0, 180],
+          outputRange: ['0deg', '180deg'],
+        }),
+      },
+    ],
+  };
+  const flipToFront = () => {
+    Animated.timing(flipAnimation, {
+      toValue: 180,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+    console.log(selectedValue);
+  };
 
   const onCardPress = (item: boxCardInterface) => {
     SetSelectedValue(item);
     WinAlert(item);
+    flipToFront();
   };
   const WinAlert = (item: boxCardInterface) => {
     SetWinAlert({
@@ -40,6 +61,7 @@ const LuckyCard = () => {
       Message: ` Congratulations you win $${item.value} USD Please Clame Your 🎁 gift!`,
     });
     SetIsWinModal(true);
+    flipAnimation.resetAnimation();
   };
   const onWinModelClosePress = () => {
     SetIsWinModal(false);
@@ -47,21 +69,28 @@ const LuckyCard = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Header title="Lucky Box" onBackPress={onBackPress} />
+      <Header title="Lucky Cards" onBackPress={onBackPress} />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.TitleText}>Congatulation !</Text>
           {/* <Text style={styles.subTitleText}>Select your lucky card!</Text> */}
         </View>
-        <View style={styles.bodyContainer}>
+        <Animated.View style={{...styles.bodyContainer}}>
           {cardData.map(item => {
             return (
               <TouchableOpacity key={item.id} onPress={() => onCardPress(item)}>
-                <Image source={Images.card} style={styles.image} />
+                {selectedValue.id === item.id ? (
+                  <Animated.Image
+                    source={Images.white_card}
+                    style={{...styles.image, ...flipToFrontStyle}}
+                  />
+                ) : (
+                  <Image source={Images.card} style={styles.image} />
+                )}
               </TouchableOpacity>
             );
           })}
-        </View>
+        </Animated.View>
         <View style={styles.footerContainer}>
           <Text style={styles.subTitleText}>
             click one of the card to win the price!
