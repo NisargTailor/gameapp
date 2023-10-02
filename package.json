@@ -5,13 +5,14 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "ios14": "npx react-native run-ios --simulator='iPhone 14 Pro'",
+    "ios15": "npx react-native run-ios --simulator='iPhone 15 Pro'",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
     "buildAndroid": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew clean && ./gradlew assembleDebug && cd .."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.19.3",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "d3-shape": "^3.2.0",

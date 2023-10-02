@@ -13,10 +13,9 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import RNShake from 'react-native-shake';
 import {Images} from '../assets';
 import {Header, Modal} from '../components';
-import {ThemeInterface, WinAlertPrors} from '../constant';
+import {ThemeInterface, WinAlertPrors, closeAlertProps} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
-import FastImage from 'react-native-fast-image';
 
 const CARD_SIZE = Dimensions.get('screen').height / 1.4;
 // create a component
@@ -25,7 +24,9 @@ const ShakeNWin = () => {
   const shakeAnimation = new Animated.Value(0);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
   const [shakeCount, SetShakeCount] = useState<number>(0);
+  const [closeAlert, SetCloseAlert] = useState<closeAlertProps>({});
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
+  const [isCloseModal, SetIsCloseModal] = useState<boolean>(false);
   const options = {
     enableVibrateFallback: true,
     ignoreAndroidSystemSettings: true,
@@ -47,7 +48,13 @@ const ShakeNWin = () => {
   }, []);
 
   const onBackPress = () => {
-    Navigation.goBack();
+    SetCloseAlert({
+      Title: `Warning`,
+      Message: `Are you want to close this game?`,
+      buttonText: 'close',
+    });
+    SetIsCloseModal(true);
+    // Navigation.goBack();
   };
   const startShake = () => {
     Animated.loop(
@@ -78,12 +85,16 @@ const ShakeNWin = () => {
   const WinAlert = () => {
     SetWinAlert({
       Title: `🎉 Congratulations 🎉`,
-      Message: ` Congratulations you win $100USD Please Clame Your 🎁 gift!`,
+      Message: ` Congratulations you win $100USD Please Claim Your 🎁 gift!`,
     });
     SetIsWinModal(true);
   };
   const onWinModelClosePress = () => {
     SetIsWinModal(false);
+  };
+  const onCloseModalPress = () => {
+    SetIsCloseModal(false);
+    Navigation.goBack();
   };
 
   return (
@@ -93,7 +104,7 @@ const ShakeNWin = () => {
         <View style={styles.headerContainer}>
           <Text style={styles.TitleText}>Congatulation !</Text>
           <Text style={styles.subTitleText}>
-            Shake you phone get the reword!
+            Shake you phone get the reward!
           </Text>
         </View>
         <Animated.View
@@ -101,7 +112,7 @@ const ShakeNWin = () => {
             styles.cardContainer,
             {transform: [{translateX: shakeAnimation}]},
           ]}>
-          <FastImage source={Images.shake} style={styles.shakeImage} />
+          <Image source={Images.shake} style={styles.shakeImage} />
         </Animated.View>
         <Modal
           visible={isWinModal}
@@ -109,6 +120,14 @@ const ShakeNWin = () => {
           title={winAlert.Title}
           message={winAlert.Message}
           onClosePress={onWinModelClosePress}
+        />
+        <Modal
+          visible={isCloseModal}
+          type="two-button"
+          title={closeAlert.Title}
+          message={closeAlert.Message}
+          buttonText="Ok"
+          onClosePress={onCloseModalPress}
         />
       </View>
     </SafeAreaView>
@@ -148,15 +167,13 @@ const Styles = (theme: ThemeInterface) => {
     },
     cardContainer: {
       flex: 1,
-      marginTop: 20,
       justifyContent: 'center',
       alignItems: 'center',
-      alignSelf: 'center',
     },
     shakeImage: {
-      height: '80%',
-      width: '80%',
-      resizeMode: 'contain',
+      height: CARD_SIZE,
+      width: CARD_SIZE,
+      resizeMode: 'repeat',
     },
     footerContainer: {
       paddingVertical: 20,

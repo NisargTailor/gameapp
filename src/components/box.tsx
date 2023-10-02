@@ -1,10 +1,9 @@
 //import liraries
 import React from 'react';
 import {
-  Dimensions,
-  Image,
   Platform,
   StyleSheet,
+  Image,
   TouchableOpacity,
   View,
 } from 'react-native';

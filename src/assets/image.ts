@@ -16,6 +16,7 @@ const Images = {
   ball: require('./images/ball.png'),
   paper: require('./images/paper.png'),
   white_card: require('./images/white_card.png'),
+  wheel: require('./images/wheel.png'),
 };
 
 export default Images;

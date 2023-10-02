@@ -3,16 +3,21 @@ import React, {useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
-  Image,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import {Images} from '../assets';
 import {Header, Modal} from '../components';
-import {ThemeInterface, WinAlertPrors, boxCardInterface} from '../constant';
+import {
+  ThemeInterface,
+  WinAlertPrors,
+  boxCardInterface,
+  closeAlertProps,
+} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
 
@@ -21,6 +26,8 @@ const LuckyCard = () => {
   const [selectedValue, SetSelectedValue] = useState<any>({});
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
+  const [closeAlert, SetCloseAlert] = useState<closeAlertProps>({});
+  const [isCloseModal, SetIsCloseModal] = useState<boolean>(false);
   const flipAnimation = useRef(new Animated.Value(0)).current;
   const [styles] = useThemeHook(Styles);
   const cardData = [
@@ -29,6 +36,15 @@ const LuckyCard = () => {
     {id: 3, value: '76', name: 'card3'},
   ];
   const onBackPress = () => {
+    SetCloseAlert({
+      Title: 'Warning',
+      Message: 'Are you want to close this game?',
+      buttonText: 'close',
+    });
+    SetIsCloseModal(true);
+  };
+  const onCloseModalPress = () => {
+    SetIsCloseModal(false);
     Navigation.goBack();
   };
   const flipToFrontStyle = {
@@ -57,8 +73,8 @@ const LuckyCard = () => {
   };
   const WinAlert = (item: boxCardInterface) => {
     SetWinAlert({
-      Title: `🎉 Congratulations 🎉`,
-      Message: ` Congratulations you win $${item.value} USD Please Clame Your 🎁 gift!`,
+      Title: '🎉 Congratulations 🎉',
+      Message: ` Congratulations you win $${item.value} USD Please Claim Your 🎁 gift!`,
     });
     SetIsWinModal(true);
     flipAnimation.resetAnimation();
@@ -72,7 +88,7 @@ const LuckyCard = () => {
       <Header title="Lucky Cards" onBackPress={onBackPress} />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.TitleText}>Congatulation !</Text>
+          <Text style={styles.TitleText}>Congratulations !</Text>
           {/* <Text style={styles.subTitleText}>Select your lucky card!</Text> */}
         </View>
         <Animated.View style={{...styles.bodyContainer}}>
@@ -103,6 +119,14 @@ const LuckyCard = () => {
         title={winAlert.Title}
         message={winAlert.Message}
         onClosePress={onWinModelClosePress}
+      />
+      <Modal
+        visible={isCloseModal}
+        type="two-button"
+        title={closeAlert.Title}
+        message={closeAlert.Message}
+        buttonText="Ok"
+        onClosePress={onCloseModalPress}
       />
     </SafeAreaView>
   );

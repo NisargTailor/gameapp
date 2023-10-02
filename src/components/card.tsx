@@ -1,6 +1,13 @@
 //import liraries
 import React from 'react';
-import {View, Text, StyleSheet, Platform, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import {GameCardInterface} from '../constant';
 
 export interface cardProps {
@@ -13,7 +20,9 @@ const Card: React.FC<cardProps> = ({item, onPress}) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.cardBody}>
-        <View style={styles.imageContainer}></View>
+        <View style={styles.imageContainer}>
+          <Image source={item?.image} style={styles.image} />
+        </View>
         <Text style={styles.titleText}>{item?.name}</Text>
       </View>
     </TouchableOpacity>
@@ -41,6 +50,11 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     backgroundColor: '#1c1c1c',
     marginBottom: 20,
+  },
+  image: {
+    width: 60,
+    height: 60,
+    resizeMode: 'contain',
   },
   titleText: {
     color: '#ffffff90',

@@ -3,7 +3,12 @@ import React, {useState} from 'react';
 import {Dimensions, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {Header, Modal} from '../components';
 import DiceAnimation from '../components/DiceRoll';
-import {ThemeInterface, WinAlertPrors, boxCardInterface} from '../constant';
+import {
+  ThemeInterface,
+  WinAlertPrors,
+  boxCardInterface,
+  closeAlertProps,
+} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
 
@@ -11,8 +16,19 @@ import {Navigation} from '../utils';
 const LuckyDice = () => {
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
+  const [closeAlert, SetCloseAlert] = useState<closeAlertProps>({});
+  const [isCloseModal, SetIsCloseModal] = useState<boolean>(false);
   const [styles] = useThemeHook(Styles);
   const onBackPress = () => {
+    SetCloseAlert({
+      Title: `Warning`,
+      Message: `Are you want to close this game?`,
+      buttonText: 'close',
+    });
+    SetIsCloseModal(true);
+  };
+  const onCloseModalPress = () => {
+    SetIsCloseModal(false);
     Navigation.goBack();
   };
 
@@ -37,7 +53,7 @@ const LuckyDice = () => {
       <Header title="Lucky Dice" onBackPress={onBackPress} />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.TitleText}>Congatulation !</Text>
+          <Text style={styles.TitleText}>Congratulations !</Text>
           <Text style={styles.subTitleText}>Select your lucky card!</Text>
         </View>
         <View style={styles.bodyContainer}>
@@ -55,6 +71,14 @@ const LuckyDice = () => {
         title={winAlert.Title}
         message={winAlert.Message}
         onClosePress={onWinModelClosePress}
+      />
+      <Modal
+        visible={isCloseModal}
+        type="two-button"
+        title={closeAlert.Title}
+        message={closeAlert.Message}
+        buttonText="Ok"
+        onClosePress={onCloseModalPress}
       />
     </SafeAreaView>
   );

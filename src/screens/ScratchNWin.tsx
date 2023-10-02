@@ -1,18 +1,29 @@
 import React, {useState} from 'react';
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {ScratchCard} from 'rn-scratch-card';
 import {Images} from '../assets';
 import {Header, Modal} from '../components';
-import {ThemeInterface, WinAlertPrors} from '../constant';
+import {ThemeInterface, WinAlertPrors, closeAlertProps} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
 const ScratchNWin = () => {
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
   const [isScratched, SetIsScreatch] = useState<boolean>(false);
+  const [closeAlert, SetCloseAlert] = useState<closeAlertProps>({});
+  const [isCloseModal, SetIsCloseModal] = useState<boolean>(false);
   const [styles] = useThemeHook(Styles);
 
   const onBackPress = () => {
+    SetCloseAlert({
+      Title: `Warning`,
+      Message: `Are you want to close this game?`,
+      buttonText: 'close',
+    });
+    SetIsCloseModal(true);
+  };
+  const onCloseModalPress = () => {
+    SetIsCloseModal(false);
     Navigation.goBack();
   };
 
@@ -63,6 +74,14 @@ const ScratchNWin = () => {
         title={winAlert.Title}
         message={winAlert.Message}
         onClosePress={onWinModelClosePress}
+      />
+      <Modal
+        visible={isCloseModal}
+        type="two-button"
+        title={closeAlert.Title}
+        message={closeAlert.Message}
+        buttonText="Ok"
+        onClosePress={onCloseModalPress}
       />
     </SafeAreaView>
   );

@@ -1,15 +1,13 @@
 //import liraries
 import React, {useState} from 'react';
-import {
-  Dimensions,
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {BoxCard, Header, Modal} from '../components';
-import {ThemeInterface, WinAlertPrors, boxCardInterface} from '../constant';
+import {
+  ThemeInterface,
+  WinAlertPrors,
+  boxCardInterface,
+  closeAlertProps,
+} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
 
@@ -18,6 +16,8 @@ const LuckyBox = () => {
   const [selectedValue, SetSelectedValue] = useState<any>({});
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
   const [winAlert, SetWinAlert] = useState<WinAlertPrors>({});
+  const [closeAlert, SetCloseAlert] = useState<closeAlertProps>({});
+  const [isCloseModal, SetIsCloseModal] = useState<boolean>(false);
   const [styles] = useThemeHook(Styles);
   const BoxData = [
     {id: 1, value: '66', name: 'box1'},
@@ -31,6 +31,15 @@ const LuckyBox = () => {
     {id: 9, value: '54', name: 'box9'},
   ];
   const onBackPress = () => {
+    SetCloseAlert({
+      Title: `Warning`,
+      Message: `Are you want to close this game?`,
+      buttonText: 'close',
+    });
+    SetIsCloseModal(true);
+  };
+  const onCloseModalPress = () => {
+    SetIsCloseModal(false);
     Navigation.goBack();
   };
 
@@ -82,6 +91,14 @@ const LuckyBox = () => {
         title={winAlert.Title}
         message={winAlert.Message}
         onClosePress={onWinModelClosePress}
+      />
+      <Modal
+        visible={isCloseModal}
+        type="two-button"
+        title={closeAlert.Title}
+        message={closeAlert.Message}
+        buttonText="Ok"
+        onClosePress={onCloseModalPress}
       />
     </SafeAreaView>
   );

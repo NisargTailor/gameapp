@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import {
   Animated,
-  Image,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  Image,
   View,
 } from 'react-native';
 import {Images} from '../assets';
 import {Header, Modal} from '../components';
-import {ThemeInterface, WinAlertPrors} from '../constant';
+import {ThemeInterface, WinAlertPrors, closeAlertProps} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
 
@@ -20,10 +20,21 @@ const LuckyLots = () => {
   const shakeAnimation = new Animated.Value(0);
   const celebrateAnimation = new Animated.Value(0);
   const scaleHideAnimation = new Animated.Value(1);
+  const [closeAlert, SetCloseAlert] = useState<closeAlertProps>({});
+  const [isCloseModal, SetIsCloseModal] = useState<boolean>(false);
 
   const [styles] = useThemeHook(Styles);
 
   const onBackPress = () => {
+    SetCloseAlert({
+      Title: 'Warning',
+      Message: 'Are you want to close this game?',
+      buttonText: 'close',
+    });
+    SetIsCloseModal(true);
+  };
+  const onCloseModalPress = () => {
+    SetIsCloseModal(false);
     Navigation.goBack();
   };
   const scaleAnimation = {
@@ -104,8 +115,8 @@ const LuckyLots = () => {
     setTimeout(() => {
       shakeAnimation.stopAnimation();
       SetWinAlert({
-        Title: `🎉 Congratulations 🎉`,
-        Message: ` Congratulations you win $100USD Please Clame Your 🎁 gift!`,
+        Title: '🎉 Congratulations 🎉',
+        Message: ' Congratulations you win $100USD Please Claim Your 🎁 gift!',
       });
       SetIsWinModal(true);
     }, 2000);
@@ -117,10 +128,10 @@ const LuckyLots = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Header title="Luky Lots" onBackPress={onBackPress} />
+      <Header title="Lucky Lots" onBackPress={onBackPress} />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.TitleText}>Congatulation !</Text>
+          <Text style={styles.TitleText}>Congratulations !</Text>
           {/* <Text style={styles.subTitleText}>Here is your scratch card</Text> */}
         </View>
         <View style={styles.cardContainer}>
@@ -196,6 +207,14 @@ const LuckyLots = () => {
         title={winAlert.Title}
         message={winAlert.Message}
         onClosePress={onWinModelClosePress}
+      />
+      <Modal
+        visible={isCloseModal}
+        type="two-button"
+        title={closeAlert.Title}
+        message={closeAlert.Message}
+        buttonText="Ok"
+        onClosePress={onCloseModalPress}
       />
     </SafeAreaView>
   );

@@ -39,6 +39,7 @@ export interface SimpleNodeInterface {
 export interface GameCardInterface {
   id: number;
   name: string;
+  image: string;
 }
 export interface boxCardInterface {
   id: number;
@@ -53,4 +54,10 @@ export interface SpinValuePrors {
 export interface WinAlertPrors {
   Title?: string;
   Message?: string;
+}
+
+export interface closeAlertProps {
+  Title?: string;
+  Message?: string;
+  buttonText?: string;
 }

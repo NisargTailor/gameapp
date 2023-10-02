@@ -4,6 +4,7 @@ import {
   Modal as RNModal,
   StyleSheet,
   TouchableWithoutFeedback,
+  Button,
 } from 'react-native';
 import React from 'react';
 import {ThemeInterface} from '../constant';
@@ -14,11 +15,12 @@ export interface ModalProps {
   message?: string;
   type: 'spin-win' | 'two-button';
   visible: boolean;
+  buttonText?: string;
   onClosePress: () => void;
 }
 
 const Modal: React.FC<ModalProps> = props => {
-  const {type, visible, title, message, onClosePress} = props;
+  const {type, visible, title, message, buttonText = '', onClosePress} = props;
   const [styles, theme] = useThemeHook(Styles);
   return (
     <RNModal
@@ -33,7 +35,20 @@ const Modal: React.FC<ModalProps> = props => {
               <Text style={styles.messageText}>{message}</Text>
             </View>
           )}
-          {type === 'two-button' && <Text>two-button</Text>}
+          {type === 'two-button' && (
+            <View style={styles.SpinWinContainer}>
+              <Text style={styles.titleText}>{title}</Text>
+              <Text style={styles.messageText}>{message}</Text>
+              <View style={styles.buttonContainer}>
+                <Button title="Cancel" color={theme.color.error} />
+                <Button
+                  title={buttonText}
+                  onPress={onClosePress}
+                  color={theme.color.success}
+                />
+              </View>
+            </View>
+          )}
         </View>
       </TouchableWithoutFeedback>
     </RNModal>
@@ -68,6 +83,15 @@ const Styles = (theme: ThemeInterface) => {
       padding: 30,
       borderWidth: 2,
       borderColor: theme.color.border,
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '30%',
+      marginTop: 20,
+    },
+    button: {
+      backgroundColor: theme.color.backgroud,
     },
   });
 };
