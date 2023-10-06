@@ -20,6 +20,7 @@ import {
 } from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
+import {useOrientation} from '../utils/useOrientation';
 
 // create a component
 const LuckyCard = () => {
@@ -30,6 +31,7 @@ const LuckyCard = () => {
   const [isCloseModal, SetIsCloseModal] = useState<boolean>(false);
   const flipAnimation = useRef(new Animated.Value(0)).current;
   const [styles] = useThemeHook(Styles);
+  const orientation = useOrientation();
   const cardData = [
     {id: 1, value: '66', name: 'card1'},
     {id: 2, value: '45', name: 'card2'},
@@ -63,7 +65,6 @@ const LuckyCard = () => {
       duration: 300,
       useNativeDriver: false,
     }).start();
-    console.log(selectedValue);
   };
 
   const onCardPress = (item: boxCardInterface) => {
@@ -101,7 +102,12 @@ const LuckyCard = () => {
                     style={{...styles.image, ...flipToFrontStyle}}
                   />
                 ) : (
-                  <Image source={Images.card} style={styles.image} />
+                  <Image
+                    source={Images.card}
+                    style={
+                      orientation === 'PORTRAIT' ? styles.imagePT : styles.image
+                    }
+                  />
                 )}
               </TouchableOpacity>
             );
@@ -163,6 +169,12 @@ const Styles = (theme: ThemeInterface) => {
     image: {
       width: Dimensions.get('window').width / 7,
       height: Dimensions.get('window').width / 4,
+      resizeMode: 'stretch',
+      margin: 5,
+    },
+    imagePT: {
+      width: 100,
+      height: 200,
       resizeMode: 'stretch',
       margin: 5,
     },

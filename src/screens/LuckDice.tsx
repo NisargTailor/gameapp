@@ -33,7 +33,6 @@ const LuckyDice = () => {
   };
 
   const onDiceChage = (number: number) => {
-    console.log('number', number);
     let item = {id: number, value: `${number}`, name: `${number}`};
     WinAlert(item);
   };

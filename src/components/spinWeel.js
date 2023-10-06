@@ -11,8 +11,13 @@ import Svg, {G, Text, TSpan, Path, Pattern} from 'react-native-svg';
 import * as d3Shape from 'd3-shape';
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 
-const width = Dimensions.get('screen').width / 3;
-const height = Dimensions.get('screen').height / 3;
+const isPortrait = () => {
+  const dim = Dimensions.get('screen');
+  return dim.height >= dim.width;
+};
+
+const width = isPortrait() ? Dimensions.get('screen').width : 300;
+const height = isPortrait() ? Dimensions.get('screen').height : 300;
 class WheelOfFortune extends Component {
   constructor(props) {
     super(props);

@@ -10,6 +10,7 @@ import {
 } from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
+import {useOrientation} from '../utils/useOrientation';
 
 // create a component
 const LuckyBox = () => {
@@ -30,6 +31,7 @@ const LuckyBox = () => {
     {id: 8, value: '87', name: 'box8'},
     {id: 9, value: '54', name: 'box9'},
   ];
+  const orientation = useOrientation();
   const onBackPress = () => {
     SetCloseAlert({
       Title: `Warning`,
@@ -44,7 +46,6 @@ const LuckyBox = () => {
   };
 
   const onCardPress = (item: boxCardInterface) => {
-    console.log('===>', item);
     WinAlert(item);
   };
   const WinAlert = (item: boxCardInterface) => {
@@ -67,6 +68,7 @@ const LuckyBox = () => {
           <Text style={styles.subTitleText}>Select your lucky box!</Text>
         </View>
         <View style={styles.bodyContainer}>
+          {orientation === 'PORTRAIT' && <View style={styles.emptyContainer} />}
           <FlatList
             scrollEnabled={false}
             // contentContainerStyle={styles.flatListContainer}
@@ -133,11 +135,13 @@ const Styles = (theme: ThemeInterface) => {
     },
     bodyContainer: {
       flex: 1,
-      padding: 20,
+      padding: 10,
+    },
+    emptyContainer: {
+      flex: 1,
     },
     flatListContainer: {
-      flex: 1,
-      backgroundColor: 'red',
+      backgroundColor: 'blue',
     },
     footerContainer: {
       justifyContent: 'center',

@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import {ThemeInterface} from '../constant';
 import {useThemeHook} from '../hook';
+import Separator from './Separator';
 
 export interface ModalProps {
   title?: string;
@@ -41,6 +42,7 @@ const Modal: React.FC<ModalProps> = props => {
               <Text style={styles.messageText}>{message}</Text>
               <View style={styles.buttonContainer}>
                 <Button title="Cancel" color={theme.color.error} />
+                <Separator width={12} />
                 <Button
                   title={buttonText}
                   onPress={onClosePress}
@@ -86,7 +88,8 @@ const Styles = (theme: ThemeInterface) => {
     },
     buttonContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
+      alignItems: 'center',
       width: '30%',
       marginTop: 20,
     },

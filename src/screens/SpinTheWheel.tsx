@@ -56,9 +56,7 @@ const SpinTheWheel = () => {
         if (selectedValue.value) {
           await AsyncStorage.setItem('Score', selectedValue.value.toString());
           const score = await AsyncStorage.getItem('Score');
-          console.log(roundScore);
-          setRoundScore({...roundScore, score});
-          console.log(roundScore);
+          setRoundScore([...roundScore, score] as never);
         }
       }
     };
@@ -89,7 +87,6 @@ const SpinTheWheel = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Header title="Spin the wheel" onBackPress={onBackPress} />
-
       <View style={styles.mainContainer}>
         <ScrollView>
           <View style={styles.titleContainer}>

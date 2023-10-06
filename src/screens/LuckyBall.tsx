@@ -5,13 +5,13 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Image,
 } from 'react-native';
 import {Images} from '../assets';
 import {Header, Modal} from '../components';
 import {ThemeInterface, WinAlertPrors, closeAlertProps} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
+import Image from 'react-native-fast-image';
 
 const LuckyBall = () => {
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);

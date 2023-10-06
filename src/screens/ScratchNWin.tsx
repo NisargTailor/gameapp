@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View, Image} from 'react-native';
 import {ScratchCard} from 'rn-scratch-card';
 import {Images} from '../assets';
 import {Header, Modal} from '../components';
@@ -32,9 +32,9 @@ const ScratchNWin = () => {
       SetIsScreatch(true);
       SetWinAlert({
         Title: `🎉 Congratulations 🎉`,
-        Message: ` Congratulations you win $100USD Please Clame Your 🎁 gift!`,
+        Message: ` Congratulations you win $100USD Please Claim Your 🎁 gift!`,
       });
-      //   SetIsWinModal(true);
+      SetIsWinModal(true);
     }
   };
   const onWinModelClosePress = () => {

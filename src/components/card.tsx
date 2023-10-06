@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {GameCardInterface} from '../constant';
+import {useOrientation} from '../utils/useOrientation';
 
 export interface cardProps {
   item?: GameCardInterface;
@@ -17,8 +18,14 @@ export interface cardProps {
 
 // create a component
 const Card: React.FC<cardProps> = ({item, onPress}) => {
+  const orientation = useOrientation();
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      style={[
+        styles.container,
+        {width: orientation === 'PORTRAIT' ? '50%' : '25%'},
+      ]}
+      onPress={onPress}>
       <View style={styles.cardBody}>
         <View style={styles.imageContainer}>
           <Image source={item?.image} style={styles.image} />
@@ -32,7 +39,6 @@ const Card: React.FC<cardProps> = ({item, onPress}) => {
 // define your styles
 const styles = StyleSheet.create({
   container: {
-    width: '25%',
     padding: 10,
   },
   cardBody: {

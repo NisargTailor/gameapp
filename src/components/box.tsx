@@ -1,14 +1,9 @@
 //import liraries
 import React from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {Images} from '../assets';
 import {boxCardInterface} from '../constant';
+import Image from 'react-native-fast-image';
 
 export interface BoxProps {
   item?: boxCardInterface;

@@ -16,6 +16,7 @@ import {Header, Modal} from '../components';
 import {ThemeInterface, WinAlertPrors, closeAlertProps} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
+import {useOrientation} from '../utils/useOrientation';
 
 const CARD_SIZE = Dimensions.get('screen').height / 1.4;
 // create a component
@@ -31,12 +32,12 @@ const ShakeNWin = () => {
     enableVibrateFallback: true,
     ignoreAndroidSystemSettings: true,
   };
+  const orientation = useOrientation();
 
   useEffect(() => {
     startShake();
     const subscription = RNShake.addListener(() => {
       // Your code here...
-      console.log('shake');
       ReactNativeHapticFeedback.trigger('impactHeavy', options);
       shakeAnimation.stopAnimation();
       WinAlert();
@@ -112,7 +113,14 @@ const ShakeNWin = () => {
             styles.cardContainer,
             {transform: [{translateX: shakeAnimation}]},
           ]}>
-          <Image source={Images.shake} style={styles.shakeImage} />
+          <Image
+            source={Images.shake}
+            style={
+              orientation === 'PORTRAIT'
+                ? styles.shakeImagePT
+                : styles.shakeImageLS
+            }
+          />
         </Animated.View>
         <Modal
           visible={isWinModal}
@@ -170,9 +178,14 @@ const Styles = (theme: ThemeInterface) => {
       justifyContent: 'center',
       alignItems: 'center',
     },
-    shakeImage: {
-      height: CARD_SIZE,
-      width: CARD_SIZE,
+    shakeImagePT: {
+      height: 200,
+      width: 200,
+      resizeMode: 'repeat',
+    },
+    shakeImageLS: {
+      height: 300,
+      width: 300,
       resizeMode: 'repeat',
     },
     footerContainer: {

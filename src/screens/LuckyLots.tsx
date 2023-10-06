@@ -13,6 +13,7 @@ import {Header, Modal} from '../components';
 import {ThemeInterface, WinAlertPrors, closeAlertProps} from '../constant';
 import {useThemeHook} from '../hook';
 import {Navigation} from '../utils';
+import {useOrientation} from '../utils/useOrientation';
 
 const LuckyLots = () => {
   const [isWinModal, SetIsWinModal] = useState<boolean>(false);
@@ -22,6 +23,7 @@ const LuckyLots = () => {
   const scaleHideAnimation = new Animated.Value(1);
   const [closeAlert, SetCloseAlert] = useState<closeAlertProps>({});
   const [isCloseModal, SetIsCloseModal] = useState<boolean>(false);
+  const orientation = useOrientation();
 
   const [styles] = useThemeHook(Styles);
 
@@ -140,7 +142,9 @@ const LuckyLots = () => {
               <>
                 <Animated.View
                   style={[
-                    styles.paperLeftContainer,
+                    orientation === 'PORTRAIT'
+                      ? styles.paperLeftContainerPT
+                      : styles.paperLeftContainerLS,
                     {
                       transform: [
                         {translateY: celebrateAnimation},
@@ -153,7 +157,9 @@ const LuckyLots = () => {
 
                 <Animated.View
                   style={[
-                    styles.paperCenterContainer,
+                    orientation === 'PORTRAIT'
+                      ? styles.paperCenterContainerPT
+                      : styles.paperCenterContainerLS,
                     {
                       transform: [{translateY: celebrateAnimation}],
                     },
@@ -166,7 +172,9 @@ const LuckyLots = () => {
                 </Animated.View>
                 <Animated.View
                   style={[
-                    styles.paperRightContainer,
+                    orientation === 'PORTRAIT'
+                      ? styles.paperRightContainerPT
+                      : styles.paperRightContainerLS,
                     {
                       transform: [
                         {translateY: celebrateAnimation},
@@ -256,11 +264,20 @@ const Styles = (theme: ThemeInterface) => {
       height: 200,
       width: 200,
     },
-    paperLeftContainer: {
+    paperLeftContainerPT: {
       position: 'absolute',
-      top: 70,
+      top: 300,
     },
-    paperCenterContainer: {
+    paperLeftContainerLS: {position: 'absolute', top: 70},
+    paperCenterContainerPT: {
+      position: 'absolute',
+      top: 200,
+      left: 10,
+      right: 50,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    paperCenterContainerLS: {
       position: 'absolute',
       top: -10,
       left: 10,
@@ -268,7 +285,14 @@ const Styles = (theme: ThemeInterface) => {
       justifyContent: 'center',
       alignItems: 'center',
     },
-    paperRightContainer: {
+    paperRightContainerPT: {
+      position: 'absolute',
+      top: 290,
+      right: 10,
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
+    },
+    paperRightContainerLS: {
       position: 'absolute',
       top: 80,
       right: 10,
