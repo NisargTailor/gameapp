@@ -63,12 +63,21 @@ const LuckyBox = () => {
     <SafeAreaView style={styles.safeAreaView}>
       <Header title="Lucky Box" onBackPress={onBackPress} />
       <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.TitleText}>Congatulation !</Text>
-          <Text style={styles.subTitleText}>Select your lucky box!</Text>
-        </View>
+        {orientation !== 'PORTRAIT' && (
+          <View style={styles.headerContainer}>
+            <Text style={styles.TitleText}>Congratulations !</Text>
+            <Text style={styles.subTitleText}>Select your lucky box!</Text>
+          </View>
+        )}
         <View style={styles.bodyContainer}>
-          {orientation === 'PORTRAIT' && <View style={styles.emptyContainer} />}
+          {orientation === 'PORTRAIT' && (
+            <View style={styles.emptyContainer}>
+              <View style={styles.headerContainer}>
+                <Text style={styles.TitleText}>Congratulations !</Text>
+                <Text style={styles.subTitleText}>Select your lucky box!</Text>
+              </View>
+            </View>
+          )}
           <FlatList
             scrollEnabled={false}
             // contentContainerStyle={styles.flatListContainer}

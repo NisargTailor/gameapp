@@ -103,7 +103,7 @@ const ShakeNWin = () => {
       <Header title="Shake & Win" onBackPress={onBackPress} />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.TitleText}>Congatulation !</Text>
+          <Text style={styles.TitleText}>Congratulations !</Text>
           <Text style={styles.subTitleText}>
             Shake you phone get the reward!
           </Text>

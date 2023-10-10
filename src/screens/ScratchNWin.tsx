@@ -45,7 +45,7 @@ const ScratchNWin = () => {
       <Header title="Scratch & Win" onBackPress={onBackPress} />
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.TitleText}>Congatulation !</Text>
+          <Text style={styles.TitleText}>Congratulations !</Text>
           {/* <Text style={styles.subTitleText}>Here is your scratch card</Text> */}
         </View>
         <View style={styles.cardContainer}>

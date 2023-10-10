@@ -53,15 +53,13 @@ const LuckyDice = () => {
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.TitleText}>Congratulations !</Text>
-          <Text style={styles.subTitleText}>Select your lucky card!</Text>
+          <Text style={styles.subTitleText}>Click to roll dice</Text>
         </View>
         <View style={styles.bodyContainer}>
           <DiceAnimation onDiceChange={onDiceChage} />
         </View>
         <View style={styles.footerContainer}>
-          <Text style={styles.subTitleText}>
-            click one of the card to win the price!
-          </Text>
+          <Text style={styles.subTitleText}>Roll dice to win prize</Text>
         </View>
       </View>
       <Modal
